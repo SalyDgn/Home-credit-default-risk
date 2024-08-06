@@ -5,13 +5,13 @@ from PIL import Image
 import lightgbm
 import os
 
-
-# Charger le modèle ML
-# with open('app_scoring/app_scoring/model.pkl', 'rb') as file:
-#     model = pickle.load(file)
+print(os.getcwd)
+#Charger le modèle ML
+with open('model.pkl', 'rb') as file:
+    model = pickle.load(file)
 
 # Charger l'image
-image = Image.open('app_scoring/app_scoring/Home_Credit_logo.svg.png')
+image = Image.open('Home_Credit_logo.svg.png')
 
 # Redimensionner l'image
 new_width = 300  # spécifiez la largeur souhaitée
@@ -22,7 +22,7 @@ resized_image = image.resize((new_width, new_height))
 st.image(resized_image, use_column_width=True)
 
 # Charger le dataset de test
-test_data = pd.read_csv('app_scoring/app_scoring/test_data_final.csv', index_col=0)
+test_data = pd.read_csv('test_data_final.csv', index_col=0)
 
 
 # Fonction pour obtenir les informations du client et faire une prédiction
