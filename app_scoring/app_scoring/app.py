@@ -2,11 +2,8 @@ import streamlit as st
 import pandas as pd
 import pickle
 from PIL import Image
-import lightgbm
-import os
 
-print(os.getcwd)
-#Charger le modèle ML
+# Charger le modèle ML
 with open('model.pkl', 'rb') as file:
     model = pickle.load(file)
 
