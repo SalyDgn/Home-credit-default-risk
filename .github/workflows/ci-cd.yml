@@ -30,6 +30,7 @@ jobs:
         run: |
           mkdir -p ~/.config/kaggle
           echo "${{ secrets.KAGGLE_JSON }}" > ~/.config/kaggle/kaggle.json
+          chmod 600 ~/.config/kaggle/kaggle.json
 
       - name: Run tests
         run: |
