@@ -1,6 +1,7 @@
 import pandas as pd
 import pickle
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
 
@@ -322,8 +323,6 @@ def predict():
     return jsonify(
         {'client_id': client_id, 'default_probability_statement': prob_statement, 'recommendation': recommendation}
     )
-
-    import os
 
 
 port = int(os.environ.get("PORT", 5000))
