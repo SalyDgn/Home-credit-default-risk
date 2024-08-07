@@ -59,12 +59,18 @@ if client_id:
         # Préparer les données du client pour la prédiction
         features = client_data.drop(columns=['SK_ID_CURR'])
 
-       # Faire la prédiction
+        # Faire la prédiction
         prediction = model.predict_proba(features)
         st.subheader("Predict Result")
         if prediction[0][0] > 0.5:
-            st.markdown(f'<p style="color:green;">The customer is more likely to repay the loan at {prediction[0][0] * 100:.2f}% </p>', unsafe_allow_html=True)
+            st.markdown(
+                f'<p style="color:green;">The customer is more likely to repay the loan at {prediction[0][0] * 100:.2f}% </p>',
+                unsafe_allow_html=True,
+            )
         else:
-            st.markdown(f'<p style="color:red;">The customer is a more likely to be a defaulter at {prediction[0][1] * 100:.2f}%</p>', unsafe_allow_html=True)
+            st.markdown(
+                f'<p style="color:red;">The customer is a more likely to be a defaulter at {prediction[0][1] * 100:.2f}%</p>',
+                unsafe_allow_html=True,
+            )
     else:
-            st.write("Custumer not found")
+        st.write("Custumer not found")
