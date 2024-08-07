@@ -44,7 +44,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./src/API
           push: true
           tags: your-dockerhub-username/your-image-name:latest
 
@@ -55,4 +55,3 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{"service_id": "your-service-id"}'
 
-          
