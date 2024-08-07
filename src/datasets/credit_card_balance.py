@@ -1,8 +1,14 @@
-import pickle
-from datetime import datetime
+import os
+import sys
 
+# Add the parent directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from utils import reduce_memory_usage
+import pickle
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from loguru import logger
 
 
@@ -43,7 +49,7 @@ class preprocess_credit_card_balance:
             logger.info('#########################################################')
             logger.info("Loading the DataFrame, credit_card_balance.csv, into memory...")
 
-        self.cc_balance = pd.read_csv(self.file_directory + 'credit_card_balance.csv')
+        self.cc_balance = reduce_memory_usage(pd.read_csv(self.file_directory + 'credit_card_balance.csv'))
         self.initial_size = self.cc_balance.shape
 
         if self.verbose:
