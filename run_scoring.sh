@@ -13,9 +13,9 @@ echo "================================== Start credit scoring training =========
 
 # Define an array of notebooks
 notebooks=(
-    # "scoring_01_data_exploration.ipynp"
+    "scoring_01_data_exploration.ipynp"
     "scoring_02_preprocessing.ipynb"
-    "scoring_04_feature_selection_and_modeling.ipynb"
+    "scoring_05_feature_selection_and_modeling.ipynb"
 )
 
 # Loop through each notebook and execute with Papermill
