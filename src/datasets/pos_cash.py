@@ -1,9 +1,18 @@
+import os
+import sys
+
+# Add the parent directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import pickle
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from loguru import logger
+
 from utils import reduce_memory_usage
+
 
 class preprocess_POS_CASH_balance:
     '''
@@ -27,7 +36,6 @@ class preprocess_POS_CASH_balance:
         self.file_directory = file_directory
         self.verbose = verbose
         self.dump_to_pickle = dump_to_pickle
-        self.nrows = nrows
         self.start = datetime.now()
         logger.info('Preprocessing class initialized.')
 
@@ -62,7 +70,7 @@ class preprocess_POS_CASH_balance:
             start = datetime.now()
             logger.info("Starting Data Pre-processing and Feature Engineering...")
 
-        # Example of preprocessing and feature engineering 
+        # Example of preprocessing and feature engineering
         # self.pos_cash['new_feature'] = self.pos_cash['feature_1'] / self.pos_cash['feature_2']
 
         if self.verbose:
@@ -80,7 +88,13 @@ class preprocess_POS_CASH_balance:
             logger.info("Aggregating POS_CASH_balance over SK_ID_CURR...")
 
         # Combining numerical features
-        pos_cash_numerical_aggregated = self.pos_cash.select_dtypes(include=[np.number]).drop('SK_ID_PREV', axis=1).groupby(by=['SK_ID_CURR']).mean().reset_index()
+        pos_cash_numerical_aggregated = (
+            self.pos_cash.select_dtypes(include=[np.number])
+            .drop('SK_ID_PREV', axis=1)
+            .groupby(by=['SK_ID_CURR'])
+            .mean()
+            .reset_index()
+        )
 
         # Combining categorical features
         pos_cash_categorical = pd.get_dummies(self.pos_cash.select_dtypes('object'))
@@ -89,7 +103,9 @@ class preprocess_POS_CASH_balance:
 
         # Merge numerical and categorical features
         pos_cash_aggregated = pos_cash_numerical_aggregated.merge(pos_cash_categorical_aggregated, on='SK_ID_CURR')
-        pos_cash_aggregated.columns = ['POS_' + column if column != 'SK_ID_CURR' else column for column in pos_cash_aggregated.columns]
+        pos_cash_aggregated.columns = [
+            'POS_' + column if column != 'SK_ID_CURR' else column for column in pos_cash_aggregated.columns
+        ]
         pos_cash_aggregated.fillna(0, inplace=True)
 
         if self.verbose:
@@ -117,7 +133,10 @@ class preprocess_POS_CASH_balance:
         if self.verbose:
             logger.info('Done preprocessing POS_CASH_balance.')
             logger.info('Initial Size of POS_CASH_balance: {}', self.initial_size)
-            logger.info('Size of POS_CASH_balance after Pre-Processing, Feature Engineering and Aggregation: {}', pos_cash_aggregated.shape)
+            logger.info(
+                'Size of POS_CASH_balance after Pre-Processing, Feature Engineering and Aggregation: {}',
+                pos_cash_aggregated.shape,
+            )
             logger.info('Total Time Taken: {}', datetime.now() - self.start)
 
         if self.dump_to_pickle:

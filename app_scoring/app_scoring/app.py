@@ -1,6 +1,7 @@
-import streamlit as st
-import pandas as pd
 import pickle
+
+import pandas as pd
+import streamlit as st
 from PIL import Image
 
 # Charger le modèle ML
@@ -30,7 +31,7 @@ def get_client_data(client_id, data):
     return client_data
 
 
-# Titre de l'applicationpip 
+# Titre de l'applicationpip
 st.title("Credit Scoring Application")
 
 # Color background
@@ -62,8 +63,8 @@ if client_id:
         prediction = model.predict_proba(features)
         st.subheader("Predict Result")
         if prediction[0][0] > 0.5:
-          st.markdown('<p style="color:green;">The customer is not a delfauter</p>', unsafe_allow_html=True)
-        if prediction[0][0] <=0.5:
-          st.markdown('<p style="color:red;">The customer is a defaulter</p>', unsafe_allow_html=True)
+            st.markdown('<p style="color:green;">The customer is not a delfauter</p>', unsafe_allow_html=True)
+        if prediction[0][0] <= 0.5:
+            st.markdown('<p style="color:red;">The customer is a defaulter</p>', unsafe_allow_html=True)
     else:
         st.write("Custumer not found")

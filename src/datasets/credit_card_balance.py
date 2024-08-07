@@ -1,8 +1,10 @@
 import pickle
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from loguru import logger
+
 
 class preprocess_credit_card_balance:
     '''
@@ -20,7 +22,7 @@ class preprocess_credit_card_balance:
             file_directory (str): Path to the directory where the files are located.
             verbose (bool): Whether to enable verbose logging.
             dump_to_pickle (bool): Whether to pickle the final preprocessed table.
-            
+
         '''
         self.file_directory = file_directory
         self.verbose = verbose
@@ -59,7 +61,7 @@ class preprocess_credit_card_balance:
             start = datetime.now()
             logger.info("Starting Data Pre-processing and Feature Engineering...")
 
-        # Example of preprocessing and feature engineering 
+        # Example of preprocessing and feature engineering
         # self.cc_balance['new_feature'] = self.cc_balance['feature_1'] / self.cc_balance['feature_2']
 
         if self.verbose:
@@ -77,7 +79,13 @@ class preprocess_credit_card_balance:
             logger.info("Aggregating the DataFrame, first over SK_ID_PREV, then over SK_ID_CURR")
 
         # Combining numerical features
-        cc_numerical_aggregated = self.cc_balance.select_dtypes(include=[np.number]).drop('SK_ID_PREV', axis=1).groupby(by=['SK_ID_CURR']).mean().reset_index()
+        cc_numerical_aggregated = (
+            self.cc_balance.select_dtypes(include=[np.number])
+            .drop('SK_ID_PREV', axis=1)
+            .groupby(by=['SK_ID_CURR'])
+            .mean()
+            .reset_index()
+        )
 
         # Combining categorical features
         cc_categorical = pd.get_dummies(self.cc_balance.select_dtypes('object'))
@@ -86,7 +94,9 @@ class preprocess_credit_card_balance:
 
         # Merge numerical and categorical features
         cc_aggregated = cc_numerical_aggregated.merge(cc_categorical_aggregated, on='SK_ID_CURR')
-        cc_aggregated.columns = ['CC_' + column if column != 'SK_ID_CURR' else column for column in cc_aggregated.columns]
+        cc_aggregated.columns = [
+            'CC_' + column if column != 'SK_ID_CURR' else column for column in cc_aggregated.columns
+        ]
         cc_aggregated.fillna(0, inplace=True)
 
         if self.verbose:
@@ -114,7 +124,10 @@ class preprocess_credit_card_balance:
         if self.verbose:
             logger.info('Done preprocessing credit_card_balance.')
             logger.info('Initial Size of credit_card_balance: {}', self.initial_size)
-            logger.info('Size of credit_card_balance after Pre-Processing, Feature Engineering and Aggregation: {}', cc_aggregated.shape)
+            logger.info(
+                'Size of credit_card_balance after Pre-Processing, Feature Engineering and Aggregation: {}',
+                cc_aggregated.shape,
+            )
             logger.info('Total Time Taken: {}', datetime.now() - self.start)
 
         if self.dump_to_pickle:

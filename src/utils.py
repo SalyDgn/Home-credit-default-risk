@@ -2,10 +2,11 @@ import numpy as np
 import pandas as pd
 from loguru import logger
 
+
 def reduce_memory_usage(df: pd.DataFrame) -> pd.DataFrame:
     """
     Optimize the memory usage of a DataFrame by downcasting numerical columns to more efficient types.
-    
+
     Args:
         df (pd.DataFrame): The DataFrame for which memory usage should be optimized.
 
@@ -13,7 +14,7 @@ def reduce_memory_usage(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: The DataFrame with optimized memory usage.
 
     Notes:
-        - This function will downcast integer columns to the smallest possible integer type (int8, int16, int32, or int64) 
+        - This function will downcast integer columns to the smallest possible integer type (int8, int16, int32, or int64)
           based on their minimum and maximum values.
         - It will also downcast floating-point columns to the smallest possible floating-point type (float16, float32, or float64).
         - Columns of type object (e.g., strings) are not modified.

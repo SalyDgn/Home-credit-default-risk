@@ -1,9 +1,18 @@
-import pickle
+import os
 import sys
+
+# Add the parent directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import pickle
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from loguru import logger
+
+from utils import reduce_memory_usage
+
 
 class preprocess_installments_payments:
     '''
@@ -41,7 +50,9 @@ class preprocess_installments_payments:
             logger.info('##########################################################')
             logger.info("Loading the DataFrame, installments_payments.csv, into memory...")
 
-        self.installments_payments = reduce_memory_usage(pd.read_csv(self.file_directory + 'installments_payments.csv', nrows=self.nrows))
+        self.installments_payments = reduce_memory_usage(
+            pd.read_csv(self.file_directory + 'installments_payments.csv', nrows=self.nrows)
+        )
         self.initial_shape = self.installments_payments.shape
 
         if self.verbose:
@@ -77,8 +88,17 @@ class preprocess_installments_payments:
             logger.info("Aggregating installments payments over SK_ID_CURR...")
 
         # Combining numerical features (only numerical features)
-        installments_payments_aggregated = self.installments_payments.select_dtypes(include=[np.number]).drop('SK_ID_PREV', axis=1).groupby(by=['SK_ID_CURR']).mean().reset_index()
-        installments_payments_aggregated.columns = ['INSTA_' + column if column != 'SK_ID_CURR' else column for column in installments_payments_aggregated.columns]
+        installments_payments_aggregated = (
+            self.installments_payments.select_dtypes(include=[np.number])
+            .drop('SK_ID_PREV', axis=1)
+            .groupby(by=['SK_ID_CURR'])
+            .mean()
+            .reset_index()
+        )
+        installments_payments_aggregated.columns = [
+            'INSTA_' + column if column != 'SK_ID_CURR' else column
+            for column in installments_payments_aggregated.columns
+        ]
         installments_payments_aggregated.fillna(0, inplace=True)
 
         if self.verbose:
@@ -106,7 +126,10 @@ class preprocess_installments_payments:
         if self.verbose:
             logger.info('Done preprocessing installments_payments.')
             logger.info('Initial Size of installments_payments: {}', self.initial_shape)
-            logger.info('Size of installments_payments after Pre-Processing, Feature Engineering and Aggregation: {}', installments_payments_aggregated.shape)
+            logger.info(
+                'Size of installments_payments after Pre-Processing, Feature Engineering and Aggregation: {}',
+                installments_payments_aggregated.shape,
+            )
             logger.info('Total Time Taken: {}', datetime.now() - self.start)
 
         if self.dump_to_pickle:

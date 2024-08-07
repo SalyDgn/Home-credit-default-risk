@@ -1,9 +1,17 @@
+import os
 import pickle
+import sys
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
 from loguru import logger
-import pendulum
-from typing import Optional, Union
+
+# Add the parent directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from utils import reduce_memory_usage
+
 
 class preprocess_bureau_balance_and_bureau:
     '''
@@ -35,7 +43,7 @@ class preprocess_bureau_balance_and_bureau:
         self.file_directory = file_directory
         self.verbose = verbose
         self.dump_to_pickle = dump_to_pickle
-        self.start = pendulum.now('UTC')
+        self.start = datetime.now()
         logger.info('Preprocessing class initialized.')
 
     def preprocess_bureau_balance(self):
@@ -61,7 +69,7 @@ class preprocess_bureau_balance_and_bureau:
 
         if self.verbose:
             logger.info("Loaded bureau_balance.csv")
-            logger.info(f"Time Taken to load = {pendulum.now() - self.start}")
+            logger.info(f"Time Taken to load = {datetime.now() - self.start}")
             logger.info("\nStarting Data Cleaning and Feature Engineering...")
 
         # # Encode STATUS labels
@@ -70,7 +78,7 @@ class preprocess_bureau_balance_and_bureau:
 
         # if self.verbose:
         #     logger.info("Halfway through. A little bit more patience...")
-        #     logger.info(f"Total Time Elapsed = {pendulum.now() - self.start}")
+        #     logger.info(f"Total Time Elapsed = {datetime.now() - self.start}")
 
         # # Aggregating over whole dataset
         # aggregated_bureau_balance = bureau_balance.groupby(['SK_ID_BUREAU']).mean().reset_index()
@@ -78,8 +86,10 @@ class preprocess_bureau_balance_and_bureau:
         if self.verbose:
             logger.info('Done preprocessing bureau_balance.')
             logger.info(f"\nInitial Size of bureau_balance: {bureau_balance.shape}")
-            logger.info(f'Size of bureau_balance after Pre-Processing, Feature Engineering and Aggregation: {bureau_balance.shape}')
-            logger.info(f'\nTotal Time Taken = {pendulum.now() - self.start}')
+            logger.info(
+                f'Size of bureau_balance after Pre-Processing, Feature Engineering and Aggregation: {bureau_balance.shape}'
+            )
+            logger.info(f'\nTotal Time Taken = {datetime.now() - self.start}')
 
         if self.dump_to_pickle:
             if self.verbose:
@@ -104,12 +114,12 @@ class preprocess_bureau_balance_and_bureau:
         '''
 
         if self.verbose:
-            start2 = pendulum.now()
+            start2 = datetime.now()
             logger.info('\n##############################################')
             logger.info('#          Pre-processing bureau.csv         #')
             logger.info('##############################################')
             if self.verbose:
-                start2 = pendulum.now('UTC')
+                start2 = datetime.now()
                 logger.info('Starting preprocessing of bureau.csv')
             logger.info("\nLoading the DataFrame, bureau.csv, into memory...")
 
@@ -117,24 +127,31 @@ class preprocess_bureau_balance_and_bureau:
 
         if self.verbose:
             logger.info("Loaded bureau.csv")
-            logger.info(f"Time Taken to load = {pendulum.now() - start2}")
+            logger.info(f"Time Taken to load = {datetime.now() - start2}")
             logger.info("\nStarting Data Cleaning and Feature Engineering...")
         # Merge with aggregated_bureau_balance
-        bureau_merged = bureau.merge(aggregated_bureau_balance, on=['SK_ID_BUREAU'], how='right').drop('SK_ID_BUREAU', axis=1)
+        bureau_merged = bureau.merge(aggregated_bureau_balance, on=['SK_ID_BUREAU'], how='right').drop(
+            'SK_ID_BUREAU', axis=1
+        )
         # Combine numerical features
-        bureau_numerical_aggregated = bureau_merged.select_dtypes(include=[np.number]).groupby(['SK_ID_CURR']).mean().reset_index()
-        bureau_numerical_aggregated.columns = ['BUREAU_' + column if column != 'SK_ID_CURR' else column for column in bureau_numerical_aggregated.columns]
+        bureau_numerical_aggregated = (
+            bureau_merged.select_dtypes(include=[np.number]).groupby(['SK_ID_CURR']).mean().reset_index()
+        )
+        bureau_numerical_aggregated.columns = [
+            'BUREAU_' + column if column != 'SK_ID_CURR' else column for column in bureau_numerical_aggregated.columns
+        ]
 
         # Combine categorical features
         bureau_categorical = pd.get_dummies(bureau_merged.select_dtypes('object'))
         bureau_categorical['SK_ID_CURR'] = bureau['SK_ID_CURR']
         bureau_categorical_aggregated = bureau_categorical.groupby(['SK_ID_CURR']).mean().reset_index()
 
-
         # Merge numerical and categorical features
         bureau_merged_aggregated = bureau_numerical_aggregated.merge(bureau_categorical_aggregated, on='SK_ID_CURR')
         bureau_merged_aggregated.update(bureau_merged_aggregated.fillna(0))
-        bureau_merged_aggregated.columns = ['BUREAU_' + column if column != 'SK_ID_CURR' else column for column in bureau_merged_aggregated.columns]
+        bureau_merged_aggregated.columns = [
+            'BUREAU_' + column if column != 'SK_ID_CURR' else column for column in bureau_merged_aggregated.columns
+        ]
 
         bureau_merged_aggregated.fillna(0, inplace=True)
 
@@ -142,7 +159,7 @@ class preprocess_bureau_balance_and_bureau:
             logger.info('Preprocessing of bureau completed.')
             logger.info('Initial Size of bureau: {}', bureau.shape)
             logger.info('Size after merging, preprocessing, and aggregation: {}', bureau_merged_aggregated.shape)
-            logger.info('Total Time Taken: {}', pendulum.now('UTC') - self.start)
+            logger.info('Total Time Taken: {}', datetime.now() - self.start)
 
         if self.dump_to_pickle:
             if self.verbose:
@@ -172,6 +189,5 @@ class preprocess_bureau_balance_and_bureau:
 
         # Preprocess the bureau table next, by combining it with the aggregated bureau_balance
         bureau_merged_aggregated = self.preprocess_bureau(aggregated_bureau_balance)
-
 
         return bureau_merged_aggregated

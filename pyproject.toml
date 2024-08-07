@@ -1,0 +1,18 @@
+[project]
+name = "home-credit-default-risk"
+
+ignore = [
+"E501", # Line too long
+"F403",
+]
+
+
+[tool.black]
+line-length = 120
+target-version = ["py39"]
+skip-string-normalization = true
+
+[tool.ruff]
+# List of codes or checks to ignore
+ignore = ["F403",'E721']
+line-length = 120
