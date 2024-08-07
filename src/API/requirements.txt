@@ -1,0 +1,4 @@
+flask
+pandas
+scikit-learn==1.4.2  # Utiliser la version avec laquelle le modèle a été formé
+lightgbm
