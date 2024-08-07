@@ -27,10 +27,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create Kaggle config
-        run: |
-          mkdir -p ~/.config/kaggle
-          echo "${{ secrets.KAGGLE_JSON }}" > ~/.config/kaggle/kaggle.json
-          chmod 600 ~/.config/kaggle/kaggle.json
+        run: | 
+          mkdir $HOME/.kaggle
+          echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > $HOME/.kaggle/kaggle.json
+          chmod 600 $HOME/.kaggle/kaggle.json
 
       - name: Run tests
         run: |
