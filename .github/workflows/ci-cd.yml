@@ -56,8 +56,8 @@ jobs:
           tags: fatou1801/home-credit-risk:latest
 
       - name: Deploy to Render
-        run: |
-          curl -X POST https://api.render.com/deploy/some-endpoint \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -H "Content-Type: application/json" \
-          -d '{"service_id": "your-service-id"}'
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: home-credit-risk:latest
+          api-key: rnd_QaBBolOXN5Tuus5VoB7qqOhN3S7K
+
