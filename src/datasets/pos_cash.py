@@ -31,7 +31,6 @@ class preprocess_POS_CASH_balance:
             file_directory (str): Path to the directory where the files are located.
             verbose (bool): Whether to enable verbose logging.
             dump_to_pickle (bool): Whether to pickle the final preprocessed table.
-            nrows (Optional[int]): Number of rows to read from the CSV file.
         '''
         self.file_directory = file_directory
         self.verbose = verbose

@@ -35,7 +35,6 @@ class preprocess_installments_payments:
             file_directory (str): Path to the directory where the files are located.
             verbose (bool): Whether to enable verbose logging.
             dump_to_pickle (bool): Whether to pickle the final preprocessed table.
-            nrows (Optional[int]): Number of rows to read from the CSV file.
         '''
         self.file_directory = file_directory
         self.verbose = verbose
@@ -56,9 +55,7 @@ class preprocess_installments_payments:
             logger.info('##########################################################')
             logger.info("Loading the DataFrame, installments_payments.csv, into memory...")
 
-        self.installments_payments = reduce_memory_usage(
-            pd.read_csv(self.file_directory + 'installments_payments.csv', nrows=self.nrows)
-        )
+        self.installments_payments = reduce_memory_usage(pd.read_csv(self.file_directory + 'installments_payments.csv'))
         self.initial_shape = self.installments_payments.shape
 
         if self.verbose:

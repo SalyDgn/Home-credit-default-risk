@@ -50,9 +50,7 @@ class preprocess_installments_payments:
             logger.info('##########################################################')
             logger.info("Loading the DataFrame, installments_payments.csv, into memory...")
 
-        self.installments_payments = reduce_memory_usage(
-            pd.read_csv(self.file_directory + 'installments_payments.csv', nrows=self.nrows)
-        )
+        self.installments_payments = reduce_memory_usage(pd.read_csv(self.file_directory + 'installments_payments.csv'))
         self.initial_shape = self.installments_payments.shape
 
         if self.verbose:
