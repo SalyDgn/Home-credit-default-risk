@@ -95,7 +95,7 @@ class preprocess_bureau_balance_and_bureau:
             if self.verbose:
                 logger.info('\nPickling pre-processed bureau_balance to bureau_balance_preprocessed.pkl')
             with open(self.file_directory + 'bureau_balance_preprocessed.pkl', 'wb') as f:
-                pickle.dump(aggregated_bureau_balance, f)
+                pickle.dump(bureau_balance, f)
             if self.verbose:
                 logger.info('Done.')
 

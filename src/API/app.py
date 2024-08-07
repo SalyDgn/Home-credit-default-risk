@@ -1,9 +1,5 @@
 import pandas as pd
-
-# import mlflow
-# import mlflow.pyfunc
 import pickle
-import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
