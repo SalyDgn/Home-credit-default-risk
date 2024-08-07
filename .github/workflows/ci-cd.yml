@@ -58,6 +58,7 @@ jobs:
       - name: Deploy to Render
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: home-credit-risk:latest
-          api-key: rnd_QaBBolOXN5Tuus5VoB7qqOhN3S7K
+          service-id: "home-credit-risk:latest"
+          api-key: "rnd_QaBBolOXN5Tuus5VoB7qqOhN3S7K"
+          wait-for-success: true
 
