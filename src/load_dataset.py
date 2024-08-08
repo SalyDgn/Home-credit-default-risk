@@ -45,7 +45,7 @@ def load_dataset(filename, competition='home-credit-default-risk', directory=PAR
         print(zip_path)
         try:
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                zip_ref.extract(zip_path)
+                zip_ref.extractall(directory)
             logger.info(f"File successfully extracted into directory: {directory}")
         except zipfile.BadZipFile as e:
             logger.error(f"Error during file extraction: {e}")

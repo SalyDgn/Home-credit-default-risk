@@ -59,7 +59,7 @@ class preprocess_application_train_test:
             logger.info('#######################################################')
             logger.info("\nLoading the DataFrames into memory...")
 
-        self.application_train = reduce_memory_usage(pd.read_csv(self.file_directory1 + 'application_train.csv'))
+        self.application_train = reduce_memory_usage(pd.read_csv(self.file_directory1 + 'cleaned_train_data.csv'))
         self.application_test = reduce_memory_usage(pd.read_csv(self.file_directory2 + 'application_test.csv'))
         self.initial_train_shape = self.application_train.shape
         self.initial_test_shape = self.application_test.shape

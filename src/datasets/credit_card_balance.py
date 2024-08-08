@@ -4,12 +4,14 @@ import sys
 # Add the parent directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from utils import reduce_memory_usage
 import pickle
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
-from datetime import datetime
 from loguru import logger
+
+from utils import reduce_memory_usage
 
 
 class preprocess_credit_card_balance:

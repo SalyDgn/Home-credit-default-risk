@@ -9,12 +9,14 @@ LOGS_DIR=${PROJECT_DIR}/logs/${YEAR}/${MONTH}
 echo $PROJECT_DIR
 mkdir -p ${LOGS_DIR}
 
+python -m mlfow ui
+
 echo "================================== Start credit scoring training ====================================="
 
 # Define an array of notebooks
 notebooks=(
-    "scoring_01_data_exploration.ipynp"
-    "scoring_02_preprocessing.ipynb"
+    "scoring_01_data_exploration.ipynb"
+    "scoring_02_prepocessing.ipynb"
     "scoring_05_feature_selection_and_modeling.ipynb"
 )
 

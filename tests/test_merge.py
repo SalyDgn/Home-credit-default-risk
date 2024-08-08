@@ -6,7 +6,9 @@
 # # Add the parent directory to the Python path
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # from src.datasets import *
-# from src.load_dataset import load_all_dataset
+
+# from src.load_dataset import load_dataset
+# from src.utils import reduce_memory_usage
 
 
 # @pytest.fixture
@@ -26,23 +28,27 @@
 #         os.rmdir(test_dir)
 
 
-# test_dir = setup_and_teardown
-# if os.path.exists(test_dir):
-#     os.rmdir(test_dir)
-# assert not os.path.exists(test_dir)
-# load_all_dataset(directory=test_dir)
+# def test_application(setup_and_teardown):
+#     test_dir = setup_and_teardown
+#     if os.path.exists(test_dir):
+#         os.rmdir(test_dir)
+#     assert not os.path.exists(test_dir)
 
-# # def test_application(setup_and_teardown):
+#     load_dataset(directory=test_dir, filename='application_train.csv')
+#     load_dataset(directory=test_dir, filename='application_test.csv')
 
-# #     train_data = reduce_memory_usage(pd.read_csv(test_dir + '/application_train.csv'))
-# #     test_data = reduce_memory_usage(pd.read_csv(test_dir + '/application_test.csv'))
+#     train_data = reduce_memory_usage(pd.read_csv(test_dir + '/application_train.csv'))
+#     test_data = reduce_memory_usage(pd.read_csv(test_dir + '/application_test.csv'))
 
-# #     assert train_data.shape == (307511, 122)
-# #     assert test_data.shape == (48744, 121)
+#     assert train_data.shape == (307511, 122)
+#     assert test_data.shape == (48744, 121)
 
-# #     application_train, application_test = preprocess_application_train_test(file_directory1=test_dir, file_directory2=test_dir).main()
+#     application_train, application_test = preprocess_application_train_test(
+#         file_directory1=test_dir, file_directory2=test_dir
+#     ).main()
 
-# #     assert application_train.shape[1] == 240
-# #     assert application_test.shape == (48744, 237)
+#     assert application_train.shape[1] == 240
+#     assert application_test.shape == (48744, 237)
+
 
 # # To do : others class and merge function
