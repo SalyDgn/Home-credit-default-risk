@@ -57,6 +57,6 @@ jobs:
       - name: Deploy to Render
         uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service_id: "srv-cqpqd5jqf0us73ao2uf0?key=Ve4yQ4QUPkQ"
+          service_id: "srv-cqpqd5jqf0us73ao2uf0"
           api_key: "rnd_yrhzmT2gIXkhtNx9Q9qzj1ts5orn"
 
