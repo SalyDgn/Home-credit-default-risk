@@ -160,5 +160,11 @@ cython_debug/
 
 # Dataset
 data/*
+data
 
 log
+
+mlruns
+
+mlartifacts
+logs/*

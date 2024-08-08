@@ -13,8 +13,8 @@ echo "================================== Start credit scoring training =========
 
 # Define an array of notebooks
 notebooks=(
-    "scoring_01_data_exploration.ipynp"
-    "scoring_02_preprocessing.ipynb"
+    "scoring_01_data_exploration.ipynb"
+    "scoring_02_prepocessing.ipynb"
     "scoring_05_feature_selection_and_modeling.ipynb"
 )
 

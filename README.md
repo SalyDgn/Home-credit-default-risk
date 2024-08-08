@@ -42,7 +42,7 @@ Contains the dashboard code made with streamlit and deploy in streamlit cloud
 
 ```notebooks``` 
 
-Contains notebooks for data exploration, prepocessing, pycaret, hyperparameters tuning feature selection and modeling
+Contains notebooks for data exploration, prepocessing, pycaret, shap, hyperparameters tuning feature selection, modeling and traking
 
 ```settings/```
 
@@ -50,33 +50,41 @@ Contains parameters for the project
 
 ```src/```
 
-Contains source code for loading datasets, utility functions, and modules for preprocessing.
+Contains source code for the API, and modules used in our code such as loading datasets, utility functions, and modules for preprocessing.
 
 ## Installation
 
-1. Clone the repository
+### 1. Clone the repository
 ```
    git clone https://github.com/yourusername/home-credit-default-risk.git
     cd home-credit-default-risk  
 ```
 
-3. Create a virtual environment and activate it
+### 2. Create a virtual environment and activate it
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
-3. Install the dependencies
+### 3. Install the dependencies
 ``` bash
 pip install -r requirements.txt
 
 ```
-4. Running the dashboard
+### 4. Running mlflow on localhost port 5000
+   ```bash
+   python -m mlflow ui
+   ```
+### 5. Running the API
+```bash
+python src/API/app.py
+```
+### 6. Running the dashboard
 
 ```bash
 python app_scoring/app.py
 ```
-5. Running the notebooks with papemill
+### 7. Running the notebooks with papemill
 
 ```bash
 ./run_scoring.sh
