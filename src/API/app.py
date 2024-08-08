@@ -33,6 +33,7 @@ test_data = pd.read_csv('test_data_final.csv', index_col=0)
 # Filtrer les features selon feature_selection
 feature_selection = MODEL_PARAMS["features_selected"] + ["SK_ID_CURR"]
 
+
 @app.route('/')
 def home():
     return "Hello, World!"
